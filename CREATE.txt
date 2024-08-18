@@ -1,0 +1,53 @@
+CREATE TABLE Genres (
+    genre_id INT PRIMARY KEY,
+    genre_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Artists (
+    artist_id INT PRIMARY KEY,
+    artist_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Albums (
+    album_id INT PRIMARY KEY,
+    album_name VARCHAR(255) NOT NULL,
+    release_year INT CHECK (release_year >= 1900)
+);
+
+CREATE TABLE Tracks (
+    track_id INT PRIMARY KEY,
+    track_name VARCHAR(255) NOT NULL,
+    duration INT CHECK (duration > 0),
+    album_id INT,
+    FOREIGN KEY (album_id) REFERENCES Albums(album_id)
+);
+
+CREATE TABLE Compilations (
+    compilation_id INT PRIMARY KEY,
+    compilation_name VARCHAR(255) NOT NULL,
+    release_year INT CHECK (release_year >= 1900)
+);
+
+CREATE TABLE CompilationTracks (
+    compilation_id INT,
+    track_id INT,
+    PRIMARY KEY (compilation_id, track_id),
+    FOREIGN KEY (compilation_id) REFERENCES Compilations(compilation_id),
+    FOREIGN KEY (track_id) REFERENCES Tracks(track_id)
+);
+
+CREATE TABLE AlbumArtists (
+    album_id INT,
+    artist_id INT,
+    PRIMARY KEY (album_id, artist_id),
+    FOREIGN KEY (album_id) REFERENCES Albums(album_id),
+    FOREIGN KEY (artist_id) REFERENCES Artists(artist_id)
+);
+
+CREATE TABLE ArtistGenres (
+    artist_id INT,
+    genre_id INT,
+    PRIMARY KEY (artist_id, genre_id),
+    FOREIGN KEY (artist_id) REFERENCES Artists(artist_id),
+    FOREIGN KEY (genre_id) REFERENCES Genres(genre_id)
+);
